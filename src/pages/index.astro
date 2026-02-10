@@ -3,6 +3,13 @@ import Dashboard from '../components/Dashboard';
 import Layout from '../layouts/Layout.astro';
 ---
 
-<Layout>
+<div style={{
+  minHeight: '100vh',
+  background: 'linear-gradient(135deg, #667eea 0%, #764ba2 100%)',
+  padding: '2rem'
+}}>
+  {<Layout>
   <Dashboard client:load />
-</Layout>
+</Layout>}
+</div>
+

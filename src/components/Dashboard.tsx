@@ -23,6 +23,19 @@ export default function Dashboard() {
   const [lastUpdated, setLastUpdated] = useState<Date | null>(null);
   const [loading, setLoading] = useState(true);
 
+   // Define glassmorphism style here
+  const glassStyle = {
+    background: 'linear-gradient(135deg, rgba(255,255,255,0.2) 0%, rgba(255,255,255,0.05) 100%)',
+    backdropFilter: 'blur(12px)',
+    WebkitBackdropFilter: 'blur(12px)',
+    borderRadius: '24px',
+    border: '1px solid rgba(255, 255, 255, 0.2)',
+    boxShadow: '0 8px 32px rgba(0, 0, 0, 0.1)',
+    padding: '1.5rem',
+    color: 'white',
+    fontFamily: 'Segoe UI, Tahoma, Geneva, Verdana, sans-serif',
+  };
+
   useEffect(() => {
     async function fetchWeather() {
       try {
@@ -66,28 +79,36 @@ export default function Dashboard() {
         gap: '1rem',
         padding: '1rem'
       }}>
+         <div style={{ gridColumn: 'span 2', gridRow: 'span 2', ...glassStyle }}>
         <CurrentConditions 
           temperature={weather.temperature}
           humidity={weather.humidity}
           pressure={weather.pressure}
           feelsLike={weather.feelsLike}
         />
+        </div>
         
+          <div style={{ ...glassStyle }}>
         <WindDisplay 
           windSpeed={weather.windSpeed}
           windDirection={weather.windDirection}
           windGust={weather.windGust}
         />
+        </div>
         
-<RainDisplay 
-  rainToday={weather.rainToday}
-  rainLastHour={parseFloat(weather.rainRate)}
-/>
+          <div style={{ ...glassStyle }}>
+        <RainDisplay 
+            rainToday={weather.rainToday}
+            rainLastHour={parseFloat(weather.rainRate)}
+        />
+        </div>
 
+          <div style={{ ...glassStyle }}>
         <UVSolarDisplay 
           uvIndex={weather.uv}
           solarRadiation={weather.solarRadiation}
         />
+        </div>
       </div>
 
       {/* Last updated timestamp */}

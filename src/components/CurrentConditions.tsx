@@ -19,8 +19,8 @@ export default function CurrentConditions({
       padding: '16px',
       maxWidth: '300px'
     }}>
-      <h2 style={{ marginTop: 0 }}>Current Conditions 🌤️</h2>
-      <div style={{ fontSize: '2rem', fontWeight: 'bold' }}>{temperature}°F</div>
+      <h2 style={{ marginTop: 0, fontSize: '1.2rem', fontWeight: 500, opacity: 0.9 }}>Current Conditions 🌤️</h2>
+      <div style={{ fontSize: '3rem', fontWeight: 200 }}>{temperature}°F</div>
       <div style={{ color: '#666' }}>Feels like {feelsLike}°F</div>
       <hr style={{ margin: '12px 0' }} />
       <div>Humidity: {humidity}%</div>
