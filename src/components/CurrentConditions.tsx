@@ -1,12 +1,17 @@
 interface Props {
   temperature: number;
-  dewPoint: number;
   humidity: number;
-  pressure: number;
+  pressure: string;
   feelsLike: number;
 }
 
-export default function CurrentConditions({ temperature, dewPoint, humidity, pressure, feelsLike }: Props) {
+export default function CurrentConditions({ 
+  temperature, 
+  humidity, 
+  pressure, 
+  feelsLike 
+}: Props) {
+  // No more useState or useEffect! Just display props.
   return (
     <div style={{ 
       border: '1px solid #ccc', 
@@ -15,18 +20,9 @@ export default function CurrentConditions({ temperature, dewPoint, humidity, pre
       maxWidth: '300px'
     }}>
       <h2 style={{ marginTop: 0 }}>Current Conditions 🌤️</h2>
-      
-      <div style={{ fontSize: '2rem', fontWeight: 'bold' }}>
-        {temperature}°F
-      </div>
-      
-      <div style={{ color: '#666' }}>
-        Feels like {feelsLike}°F
-      </div>
-      
+      <div style={{ fontSize: '2rem', fontWeight: 'bold' }}>{temperature}°F</div>
+      <div style={{ color: '#666' }}>Feels like {feelsLike}°F</div>
       <hr style={{ margin: '12px 0' }} />
-      
-      <div>Dew Point: {dewPoint}°F</div>
       <div>Humidity: {humidity}%</div>
       <div>Pressure: {pressure} inHg</div>
     </div>
