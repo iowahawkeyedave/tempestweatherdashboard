@@ -1,11 +1,52 @@
 ---
-import Welcome from '../components/Welcome.astro';
+import CurrentConditions from '../components/CurrentConditions';
+import WindDisplay from '../components/WindDisplay';
+import RainDisplay from '../components/RainDisplay';
+import UVSolarDisplay from '../components/UVSolarDisplay';
 import Layout from '../layouts/Layout.astro';
+import { fetchCurrentConditions } from '../lib/tempest';
 
-// Welcome to Astro! Wondering what to do next? Check out the Astro documentation at https://docs.astro.build
-// Don't want to use any of this? Delete everything in this file, the `assets`, `components`, and `layouts` directories, and start fresh.
+const data = await fetchCurrentConditions();
+const current = data?.obs?.[0] || {};
+
+console.log('Current Conditions:', current);
+
+const cToF = (c: number) => Math.round((c * 9/5) + 32);
+const kmhToMph = (kmh: number) => Math.round(kmh * 0.621371);
+const hPaToInHg = (hpa: number) => parseFloat((hpa * 0.02953).toFixed(2));
 ---
 
 <Layout>
-	<Welcome />
+  <div style={{
+    display: 'grid',
+    gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
+    gap: '1rem',
+    padding: '1rem'
+  }}>
+    <CurrentConditions 
+      temperature={cToF(current.air_temperature)}
+	  dewPoint={cToF(current.dew_point)}
+      humidity={current.relative_humidity}
+      pressure={hPaToInHg(current.sea_level_pressure)}
+      feelsLike={cToF(current.feels_like || current.air_temperature)}
+    />
+    
+    {/* Add WindDisplay here */}
+    <WindDisplay 
+      windSpeed={kmhToMph(current.wind_avg)}
+      windDirection={current.wind_direction}
+      windGust={kmhToMph(current.wind_gust)}
+    />
+	
+	{/* Add RainDisplay here */}
+	<RainDisplay 
+	  rainLastHour={current.precip_accum_last_1hr}
+	  rainToday={current.precip_accum_local_day}
+	/>
+
+	<UVSolarDisplay 
+	  uvIndex={current.uv}
+	  solarRadiation={current.solar_radiation}
+	/>
+  </div>
 </Layout>
