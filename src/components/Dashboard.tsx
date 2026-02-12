@@ -18,6 +18,7 @@ interface WeatherData {
   humidity: number;
   pressure: string;
   feelsLike: number;
+  dewPoint: number;
   windSpeed: number;
   windDirection: number;
   windGust: number;
@@ -121,6 +122,7 @@ export default function Dashboard() {
           humidity={weather.humidity}
           pressure={weather.pressure}
           feelsLike={weather.feelsLike}
+          dewPoint={weather.dewPoint}
         />
         </div>
         

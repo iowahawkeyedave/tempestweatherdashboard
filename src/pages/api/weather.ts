@@ -37,6 +37,7 @@ export const GET: APIRoute = async () => {
       humidity: current.relative_humidity,
       pressure: hPaToInHg(current.sea_level_pressure),
       feelsLike: cToF(current.feels_like || current.air_temperature),
+      dewPoint: cToF(current.dew_point),
       windSpeed: kmhToMph(current.wind_avg),
       windDirection: current.wind_direction,
       windGust: kmhToMph(current.wind_gust),

@@ -3,6 +3,7 @@ interface Props {
 	humidity: number;
 	pressure: string;
 	feelsLike: number;
+	dewPoint: number;
 }
 
 export default function CurrentConditions({
@@ -10,6 +11,7 @@ export default function CurrentConditions({
 	humidity,
 	pressure,
 	feelsLike,
+	dewPoint,
 }: Props) {
 	return (
 		<section
@@ -75,7 +77,7 @@ export default function CurrentConditions({
 			<div
 				style={{
 					display: "grid",
-					gridTemplateColumns: "repeat(2, minmax(0, 1fr))",
+					gridTemplateColumns: "repeat(3, minmax(0, 1fr))",
 					gap: "0.75rem 1rem",
 				}}
 			>
@@ -91,6 +93,16 @@ export default function CurrentConditions({
 						Pressure
 					</div>
 					<div style={{ fontSize: "1.2rem", fontWeight: 600 }}>{pressure} inHg</div>
+				</div>
+
+				<div>
+					<div style={{ fontSize: "0.8rem", color: "rgba(255, 255, 255, 0.68)" }}>
+						Dew Point
+					</div>
+					<div style={{ fontSize: "1.2rem", fontWeight: 600 }}>
+						{dewPoint}
+						{"\u00B0"}F
+					</div>
 				</div>
 			</div>
 		</section>
