@@ -1,0 +1,114 @@
+---
+import Layout from "../layouts/Layout.astro";
+---
+
+<Layout title="Hazardous Weather Outlook">
+	<main class="hwo-wrap">
+		<section class="hwo-card">
+			<h1 id="hwo-title">Hazardous Weather Outlook</h1>
+			<p id="hwo-meta" class="meta">Loading latest bulletin...</p>
+			<p class="meta">
+				<a id="hwo-raw-link" href="#" target="_blank" rel="noreferrer">View raw NWS API response</a>
+			</p>
+		</section>
+		<section class="hwo-card">
+			<pre id="hwo-text">Loading...</pre>
+		</section>
+	</main>
+
+	<script>
+		const params = new URLSearchParams(window.location.search);
+		const id = params.get("id");
+		const titleEl = document.getElementById("hwo-title");
+		const metaEl = document.getElementById("hwo-meta");
+		const textEl = document.getElementById("hwo-text");
+		const rawLink = document.getElementById("hwo-raw-link");
+
+		if (!id || !titleEl || !metaEl || !textEl || !rawLink) {
+			if (metaEl) metaEl.textContent = "Missing HWO product ID.";
+			if (textEl) textEl.textContent = "Try opening this page from the dashboard HWO link.";
+		} else {
+			const sourceUrl = `https://api.weather.gov/products/${encodeURIComponent(id)}`;
+			rawLink.setAttribute("href", sourceUrl);
+
+			fetch(sourceUrl, {
+				headers: {
+					Accept: "application/geo+json",
+				},
+			})
+				.then(async (response) => {
+					if (!response.ok) {
+						throw new Error(`Failed to load HWO (${response.status})`);
+					}
+					return response.json();
+				})
+				.then((data) => {
+					titleEl.textContent = data?.productName || "Hazardous Weather Outlook";
+					const issuedAt = data?.issuanceTime
+						? new Date(data.issuanceTime).toLocaleString()
+						: "Unknown";
+					const office = data?.issuingOffice || "NWS";
+					metaEl.textContent = `Issued: ${issuedAt} | Office: ${office}`;
+					textEl.textContent = data?.productText || "No bulletin text available.";
+				})
+				.catch((error) => {
+					metaEl.textContent = "Unable to load this bulletin.";
+					textEl.textContent =
+						"NWS may be temporarily unavailable. Please try again in a moment.";
+				});
+		}
+	</script>
+</Layout>
+
+<style>
+	.hwo-wrap {
+		max-width: 960px;
+		margin: 2rem auto;
+		padding: 0 1rem 2rem;
+		display: grid;
+		gap: 1rem;
+	}
+
+	.hwo-card {
+		background: rgba(255, 255, 255, 0.88);
+		border: 1px solid rgba(148, 163, 184, 0.35);
+		border-radius: 16px;
+		padding: 1rem 1.1rem;
+		box-shadow: 0 14px 34px rgba(15, 23, 42, 0.08);
+	}
+
+	h1 {
+		margin: 0 0 0.35rem;
+		font-size: 1.4rem;
+		color: #0f172a;
+	}
+
+	.meta {
+		margin: 0.2rem 0;
+		color: #475569;
+	}
+
+	a {
+		color: #0f4cc9;
+		font-weight: 600;
+		text-decoration: none;
+	}
+
+	a:hover {
+		text-decoration: underline;
+	}
+
+	pre {
+		margin: 0;
+		white-space: pre-wrap;
+		word-break: break-word;
+		font-family: "Consolas", "Courier New", monospace;
+		font-size: 0.9rem;
+		line-height: 1.5;
+		padding: 1rem;
+		background: #f8fbff;
+		border: 1px solid rgba(148, 163, 184, 0.35);
+		border-radius: 12px;
+		color: #0f172a;
+	}
+</style>

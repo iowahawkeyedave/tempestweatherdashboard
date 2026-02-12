@@ -1,5 +1,10 @@
 import type { APIRoute } from 'astro';
-import { fetchCurrentConditions, fetchTemperatureHistory24h } from '../../lib/tempest';
+import {
+  fetchCurrentConditions,
+  fetchLatestHazardousWeatherOutlook,
+  fetchTemperatureHistory24h,
+  fetchWeatherAlerts
+} from '../../lib/tempest';
 
 export const GET: APIRoute = async () => {
   try {
@@ -8,6 +13,10 @@ export const GET: APIRoute = async () => {
       fetchTemperatureHistory24h(),
     ]);
     const current = currentData?.obs?.[0] || {};
+    const [alerts, latestHwo] = await Promise.all([
+      fetchWeatherAlerts(currentData?.latitude, currentData?.longitude),
+      fetchLatestHazardousWeatherOutlook()
+    ]);
     console.log('Fetched weather data:', current); // Debug log
     
     // Helper functions (same as your index.astro)
@@ -35,7 +44,9 @@ export const GET: APIRoute = async () => {
       solarRadiation: current.solar_radiation,
       rainToday: mmToInches(current.precip_accum_local_day || 0),
       rainRate: mmToInches(current.precip_accum_last_1hr || 0),  // Changed from rainLastHour
-      temperatureTrend: hourlyTemperatureTrend
+      temperatureTrend: hourlyTemperatureTrend,
+      alerts,
+      latestHwo
     }), {
       status: 200,
       headers: {

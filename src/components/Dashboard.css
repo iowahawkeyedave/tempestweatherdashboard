@@ -1,0 +1,34 @@
+.dashboard-card {
+	transition:
+		transform 180ms ease,
+		box-shadow 220ms ease,
+		border-color 220ms ease,
+		background 220ms ease;
+	will-change: transform;
+}
+
+.dashboard-card:hover {
+	transform: translateY(-4px);
+	box-shadow: 0 16px 40px rgba(0, 0, 0, 0.2);
+	border-color: rgba(255, 255, 255, 0.34);
+	background: linear-gradient(
+		135deg,
+		rgba(255, 255, 255, 0.26) 0%,
+		rgba(255, 255, 255, 0.1) 100%
+	);
+}
+
+.dashboard-card:active {
+	transform: translateY(-1px);
+}
+
+@media (prefers-reduced-motion: reduce) {
+	.dashboard-card {
+		transition: none;
+	}
+
+	.dashboard-card:hover,
+	.dashboard-card:active {
+		transform: none;
+	}
+}
