@@ -3,6 +3,12 @@ import CurrentConditions from './CurrentConditions';
 import WindDisplay from './WindDisplay';
 import RainDisplay from './RainDisplay';
 import UVSolarDisplay from './UVSolarDisplay';
+import TemperatureChart from './TemperatureChart';
+
+interface TemperaturePoint {
+  timestamp: number;
+  temperature: number;
+}
 
 interface WeatherData {
   temperature: number;
@@ -16,6 +22,7 @@ interface WeatherData {
   rainRate: string;   // Changed from rainLastHour
   uv: number;
   solarRadiation: number;
+  temperatureTrend: TemperaturePoint[];
 }       
 
 export default function Dashboard() {
@@ -108,6 +115,10 @@ export default function Dashboard() {
           uvIndex={weather.uv}
           solarRadiation={weather.solarRadiation}
         />
+        </div>
+
+          <div style={{ gridColumn: 'span 2', ...glassStyle }}>
+        <TemperatureChart points={weather.temperatureTrend} />
         </div>
       </div>
 

@@ -19,3 +19,23 @@ export async function fetchCurrentConditions() {
     throw error;
   }
 }
+
+export async function fetchTemperatureHistory24h() {
+	try {
+		const end = Math.floor(Date.now() / 1000);
+		const start = end - 24 * 60 * 60;
+		const url = `${API_BASE}/observations/stn/${STATION_ID}?token=${TOKEN}&time_start=${start}&time_end=${end}`;
+
+		const response = await fetch(url);
+
+		if (!response.ok) {
+			throw new Error(`HTTP error! status: ${response.status}`);
+		}
+
+		const data = await response.json();
+		return data?.obs ?? [];
+	} catch (error) {
+		console.error("Failed to fetch temperature history:", error);
+		throw error;
+	}
+}
