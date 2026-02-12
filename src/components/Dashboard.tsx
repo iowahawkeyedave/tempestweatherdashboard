@@ -85,15 +85,16 @@ export default function Dashboard() {
   }
 
   return (
-    <div>
+    <div className="dashboard-shell">
       <WeatherAlertsBanner
         alerts={weather.alerts ?? []}
         latestHwo={weather.latestHwo}
         onOpenHwo={(id) => setOpenHwoId(id)}
       />
 
-      <div style={{ display: "flex", justifyContent: "flex-end", padding: "0 1rem 0.5rem" }}>
+      <div className="dashboard-meta-row">
         <div
+          className="dashboard-updated-pill"
           style={{
             color: "rgba(255, 255, 255, 0.95)",
             background: "rgba(15, 23, 42, 0.35)",
@@ -109,14 +110,8 @@ export default function Dashboard() {
         </div>
       </div>
 
-      {/* Grid container for all widgets */}
-      <div style={{
-        display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fit, minmax(300px, 1fr))',
-        gap: '1rem',
-        padding: '1rem'
-      }}>
-         <div className="dashboard-card" style={{ gridColumn: 'span 2', ...glassStyle }}>
+      <div className="dashboard-grid">
+         <div className="dashboard-card dashboard-current" style={glassStyle}>
         <CurrentConditions 
           temperature={weather.temperature}
           humidity={weather.humidity}
@@ -126,7 +121,7 @@ export default function Dashboard() {
         />
         </div>
         
-          <div className="dashboard-card" style={{ ...glassStyle }}>
+          <div className="dashboard-card dashboard-wind" style={{ ...glassStyle }}>
         <WindDisplay 
           windSpeed={weather.windSpeed}
           windDirection={weather.windDirection}
@@ -134,21 +129,21 @@ export default function Dashboard() {
         />
         </div>
         
-          <div className="dashboard-card" style={{ ...glassStyle }}>
+          <div className="dashboard-card dashboard-rain" style={{ ...glassStyle }}>
         <RainDisplay 
             rainToday={weather.rainToday}
             rainLastHour={parseFloat(weather.rainRate)}
         />
         </div>
 
-          <div className="dashboard-card" style={{ ...glassStyle }}>
+          <div className="dashboard-card dashboard-uv" style={{ ...glassStyle }}>
         <UVSolarDisplay 
           uvIndex={weather.uv}
           solarRadiation={weather.solarRadiation}
         />
         </div>
 
-          <div className="dashboard-card" style={{ gridColumn: 'span 2', ...glassStyle }}>
+          <div className="dashboard-card dashboard-temp" style={{ ...glassStyle }}>
         <TemperatureChart points={weather.temperatureTrend} />
         </div>
       </div>
