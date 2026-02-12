@@ -1,46 +1,94 @@
-# Astro Starter Kit: Basics
+# Tempest Weather Dashboard
 
-```sh
-npm create astro@latest -- --template basics
+A weather dashboard built with Astro + React that displays live station conditions from Tempest, active alerts from the National Weather Service (NWS), and a 24-hour temperature trend.
+
+## What This Project Does
+
+- Shows current conditions (temperature, feels like, humidity, pressure, dew point)
+- Displays wind details with a visual compass
+- Shows rain and UV/solar metrics
+- Renders a 24-hour temperature trend chart
+- Pulls active NWS alerts for the station location
+- Links to the latest Hazardous Weather Outlook (HWO) and opens full text in-app
+
+## Tech Stack
+
+- Astro 5
+- React 19
+- TypeScript
+- Chart.js + react-chartjs-2
+- Biome (formatting/linting)
+
+## Data Sources
+
+- Tempest API (WeatherFlow): station observations and historical trend data
+- National Weather Service API (`api.weather.gov`): active alerts and HWO products
+
+## Environment Variables
+
+Create a `.env` file in the project root:
+
+```env
+TEMPEST_API_TOKEN=your_token_here
+TEMPEST_STATION_ID=your_station_id_here
+# optional, defaults to DVN
+NWS_OFFICE=KDVN
 ```
 
-> 🧑‍🚀 **Seasoned astronaut?** Delete this file. Have fun!
+## Getting Started
 
-## 🚀 Project Structure
+```bash
+npm install
+npm run dev
+```
 
-Inside of your Astro project, you'll see the following folders and files:
+The app runs at `http://localhost:4321` by default.
+
+## Available Scripts
+
+- `npm run dev` - Start local dev server (polling enabled for reliable file watching in WSL)
+- `npm run build` - Create a production build in `dist/`
+- `npm run preview` - Preview the production build locally
+- `npm run astro ...` - Run Astro CLI commands
+
+## Project Structure
 
 ```text
-/
-├── public/
-│   └── favicon.svg
-├── src
-│   ├── assets
-│   │   └── astro.svg
-│   ├── components
-│   │   └── Welcome.astro
-│   ├── layouts
-│   │   └── Layout.astro
-│   └── pages
-│       └── index.astro
-└── package.json
+src/
+  components/
+    CurrentConditions.tsx
+    WindDisplay.tsx
+    WindCompass.tsx
+    RainDisplay.tsx
+    UVSolarDisplay.tsx
+    TemperatureChart.tsx
+    WeatherAlertsBanner.tsx
+    HwoModal.tsx
+    Dashboard.tsx
+  lib/
+    tempest.ts
+  pages/
+    index.astro
+    hwo.astro
+    api/
+      weather.ts
+  layouts/
+    Layout.astro
 ```
 
-To learn more about the folder structure of an Astro project, refer to [our guide on project structure](https://docs.astro.build/en/basics/project-structure/).
+## Notes
 
-## 🧞 Commands
+- The dashboard refreshes weather data every 60 seconds.
+- NWS coverage is U.S.-focused.
+- HWO modal content is loaded directly from NWS product endpoints at runtime.
 
-All commands are run from the root of the project, from a terminal:
+## Deployment
 
-| Command                   | Action                                           |
-| :------------------------ | :----------------------------------------------- |
-| `npm install`             | Installs dependencies                            |
-| `npm run dev`             | Starts local dev server at `localhost:4321`      |
-| `npm run build`           | Build your production site to `./dist/`          |
-| `npm run preview`         | Preview your build locally, before deploying     |
-| `npm run astro ...`       | Run CLI commands like `astro add`, `astro check` |
-| `npm run astro -- --help` | Get help using the Astro CLI                     |
+This project outputs a static site (`dist/`) and can be deployed to static hosts such as Vercel, Netlify, GitHub Pages, or Cloudflare Pages.
 
-## 👀 Want to learn more?
+## Roadmap
 
-Feel free to check [our documentation](https://docs.astro.build) or jump into our [Discord server](https://astro.build/chat).
+- Add keyboard/escape and click-outside close behavior for the HWO modal
+- Introduce unit tests for alert mapping and weather data transforms
+- Add user-selectable units (F/C, mph/kph, in/mm)
+- Expand forecast views beyond current conditions (hourly + multi-day)
